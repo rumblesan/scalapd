@@ -11,7 +11,8 @@ import akka.actor._
 
 class PureDataManager(port: Int) extends Actor {
 
-  val pdProcess:ActorRef = context.actorOf(Props[PureData])
+  val listenerProps = Props(new PureDataListener)
+  val pdProcess:ActorRef = context.actorOf(Props(new PureDataProcess(listenerProps)))
   val pdComs = new PDComs(port, self)
 
   var running: Boolean = false
@@ -46,4 +47,5 @@ class PureDataManager(port: Int) extends Actor {
 
 }
 
+case class SendPDMessage(message: List[String])
 
