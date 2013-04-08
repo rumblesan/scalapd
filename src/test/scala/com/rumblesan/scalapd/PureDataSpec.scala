@@ -12,8 +12,9 @@ class PureDataSpec extends Specification {
 
     "be instantiated correctly" in {
       implicit val system = ActorSystem("testsystem")
-      val manager = TestActorRef(new PureData)
-      manager.underlyingActor must haveClass[PureData]
+      val listenerProps = Props(new PureDataListener)
+      val manager = TestActorRef(new PureDataProcess(listenerProps))
+      manager.underlyingActor must haveClass[PureDataProcess]
       manager ! PoisonPill
     }
 
