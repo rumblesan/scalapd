@@ -20,5 +20,7 @@ resolvers += "jboss repo" at "http://repository.jboss.org/nexus/content/groups/p
 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.1.2"
 
+libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.1.2"
+
 libraryDependencies += "org.jboss.netty" % "netty" % "3.2.7.Final"
 
