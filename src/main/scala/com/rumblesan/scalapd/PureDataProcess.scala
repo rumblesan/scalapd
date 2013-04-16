@@ -40,6 +40,8 @@ class PureDataProcess(loggingActor: Props) extends Actor {
 
   val subprocess = context.actorOf(Props[SubProcess])
 
+  var process: Option[Process] = None
+
   def receive = {
 
     case StartPD(exe, port, patch, paths, extraArgs) => {
@@ -51,16 +53,25 @@ class PureDataProcess(loggingActor: Props) extends Actor {
         line => listener ! LogMessage(line)
       )
 
-      val p = Process(args)
+      val pb = Process(args)
+      val p = pb.run(l)
 
-      subprocess ! SubProcessRun(p, l)
+      process = Some(p)
 
+      subprocess ! SubProcessRun(p)
+
+    }
+
+    case KillPd() => {
+      process.map(_.destroy())
+      process = None
     }
 
   }
 
 }
 
+case class KillPd()
 case class StartPD(exe:String, port:Int, patch:String, paths:List[String], extraArgs:List[String])
 
 

@@ -2,15 +2,15 @@ package com.rumblesan.scalapd.util
 
 import akka.actor.Actor
 
-import scala.sys.process.{ ProcessBuilder, ProcessLogger }
+import scala.sys.process.Process
 
 
 class SubProcess extends Actor {
 
   def receive = {
 
-    case SubProcessRun(p, l) => {
-      val result = p ! l
+    case SubProcessRun(p) => {
+      val result = p.exitValue()
       sender ! SubProcessFinished(result)
     }
 
@@ -18,6 +18,6 @@ class SubProcess extends Actor {
 
 }
 
-case class SubProcessRun(p: ProcessBuilder, l: ProcessLogger)
+case class SubProcessRun(p: Process)
 case class SubProcessFinished(result: Int)
 
