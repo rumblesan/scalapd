@@ -13,7 +13,7 @@ class PureDataManager(port: Int) extends Actor {
 
   val listenerProps = Props(new PureDataListener)
   val pdProcess:ActorRef = context.actorOf(Props(new PureDataProcess(listenerProps)))
-  val pdComs = new PDComs(port, self)
+  lazy val pdComs = new PDComs(port, self)
 
   var running: Boolean = false
 
