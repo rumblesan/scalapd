@@ -26,9 +26,7 @@ class PureDataSpec extends Specification {
       val listenerProps = Props(new PureDataListener)
       val pd = TestActorRef(new PureDataProcess(listenerProps))
 
-      val start = StartPD(pdPath, 9000, patch, List.empty[String], List.empty[String])
-
-      pd ! start
+      pd ! StartPD(pdPath, 12345, patch, List.empty[String], List.empty[String])
 
       Thread.sleep(4000)
 
