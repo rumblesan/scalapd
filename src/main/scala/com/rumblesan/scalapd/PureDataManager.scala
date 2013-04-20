@@ -31,6 +31,10 @@ class PureDataManager(port: Int) extends Actor {
       }
     }
 
+    case KillPd() => {
+      pdProcess ! KillPd()
+    }
+
     case PDConnection(connection) => {
       channel = connection
     }

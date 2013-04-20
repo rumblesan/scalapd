@@ -12,12 +12,13 @@ class PureDataManagerSpec extends Specification {
 
     "be instantiated correctly" in {
       implicit val system = ActorSystem("testsystem")
-      val pd = TestActorRef(new PureDataManager(8000))
-      pd.underlyingActor must haveClass[PureDataManager]
+      val manager = TestActorRef(new PureDataManager(8000))
+      manager.underlyingActor must haveClass[PureDataManager]
 
       Thread.sleep(4000)
 
-      pd ! PoisonPill
+      manager ! KillPd()
+      manager ! PoisonPill
     }
 
     "run up a PD process" in {
@@ -34,6 +35,7 @@ class PureDataManagerSpec extends Specification {
       Thread.sleep(4000)
 
       manager.underlyingActor must haveClass[PureDataManager]
+      manager ! KillPd()
       manager ! PoisonPill
     }
 
