@@ -9,19 +9,23 @@ import akka.actor._
   * between it and the rest of the app
   */
 
-class PureDataManager(port: Int) extends Actor {
+class PureDataManager() extends Actor {
 
   val listenerProps = Props(new PureDataListener)
   val pdProcess:ActorRef = context.actorOf(Props(new PureDataProcess(listenerProps)))
-  lazy val pdComs = new PDComs(port, self)
+
+  var pdComs: Option[PDComs] = None
 
   var running: Boolean = false
 
-  var channel: PDChannel = null
+  var channel: Option[PDChannel] = None
 
   def receive = {
 
     case StartPD(exe, port, patch, paths, extraArgs) => {
+
+      pdComs = Some(new PDComs(port, self))
+
       if (running) {
         println("Already Running")
       } else {
@@ -32,15 +36,17 @@ class PureDataManager(port: Int) extends Actor {
     }
 
     case KillPd() => {
+      channel.map(_.channel.close())
+      pdComs.map(_.serverChannel.close())
       pdProcess ! KillPd()
     }
 
     case PDConnection(connection) => {
-      channel = connection
+      channel = Some(connection)
     }
 
     case SendPDMessage(message) => {
-      channel.write(message)
+      channel.map(_.write(message))
     }
 
     case PDMessage(message) => {

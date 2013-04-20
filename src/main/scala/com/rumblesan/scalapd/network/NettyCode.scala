@@ -29,7 +29,7 @@ class PDComs(port: Int, manager: ActorRef) {
   bootstrap.setOption("child.tcpNoDelay", true)
   bootstrap.setOption("child.keepAlive", true)
 
-  bootstrap.bind(new InetSocketAddress(port))
+  val serverChannel = bootstrap.bind(new InetSocketAddress(port))
 
 }
 
