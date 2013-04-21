@@ -44,7 +44,7 @@ class PureDataProcess(loggingActor: Props) extends Actor {
 
   def receive = {
 
-    case StartPD(exe, port, patch, paths, extraArgs) => {
+    case StartPD(exe, port, patch, paths, extraArgs, _) => {
 
       val args = PureData.createPdArgs(exe, port, patch, paths, extraArgs)
 
@@ -72,6 +72,6 @@ class PureDataProcess(loggingActor: Props) extends Actor {
 }
 
 case class KillPd()
-case class StartPD(exe:String, port:Int, patch:String, paths:List[String], extraArgs:List[String])
+case class StartPD(exe:String, port:Int, patch:String, paths:List[String], extraArgs:List[String], responder: Option[ActorRef])
 
 

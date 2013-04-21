@@ -28,7 +28,7 @@ class PureDataManagerSpec extends Specification {
       val pdPath = "/Applications/Pd-extended.app/Contents/Resources/bin/pdextended"
       val patch  = "/Users/guy/repositories/patchwerk/patches/test.pd"
 
-      val start = StartPD(pdPath, 12345, patch, List.empty[String], List.empty[String])
+      val start = StartPD(pdPath, 12345, patch, List.empty[String], List.empty[String], None)
 
       manager ! start
 
