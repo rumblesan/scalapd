@@ -12,7 +12,8 @@ class PureDataManagerSpec extends Specification {
 
     "be instantiated correctly" in {
       implicit val system = ActorSystem("testsystem")
-      val manager = TestActorRef(new PureDataManager())
+      val listenerProps = Props(new PureDataListener)
+      val manager = TestActorRef(new PureDataManager(listenerProps))
       manager.underlyingActor must haveClass[PureDataManager]
 
       Thread.sleep(12000)
@@ -23,7 +24,8 @@ class PureDataManagerSpec extends Specification {
 
     "run up a PD process" in {
       implicit val system = ActorSystem("testsystem")
-      val manager = TestActorRef(new PureDataManager())
+      val listenerProps = Props(new PureDataListener)
+      val manager = TestActorRef(new PureDataManager(listenerProps))
 
       val pdPath = "/Applications/Pd-extended.app/Contents/Resources/bin/pdextended"
       val patch  = "/Users/guy/repositories/patchwerk/patches/test.pd"

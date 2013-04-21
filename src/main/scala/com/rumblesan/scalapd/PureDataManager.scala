@@ -9,9 +9,8 @@ import akka.actor._
   * between it and the rest of the app
   */
 
-class PureDataManager() extends Actor {
+class PureDataManager(listenerProps: Props) extends Actor {
 
-  val listenerProps = Props(new PureDataListener)
   val pdProcess:ActorRef = context.actorOf(Props(new PureDataProcess(listenerProps)))
 
   var pdComs: Option[PDComs] = None
